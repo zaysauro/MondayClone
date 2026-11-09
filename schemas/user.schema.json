@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crm/user.schema.json",
+  "title": "User — corretor, gestor ou assistente",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "email", "role", "active", "createdAt", "updatedAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "name": { "type": "string", "minLength": 2, "maxLength": 120 },
+    "email": { "type": "string", "format": "email" },
+    "role": { "$ref": "crm/enums.json#/definitions/UserRole" },
+    "creci": { "type": ["string", "null"], "maxLength": 30 },
+    "phone": { "type": ["string", "null"] },
+    "active": { "type": "boolean" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}

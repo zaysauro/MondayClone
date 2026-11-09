@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crm/commission.schema.json",
+  "title": "Commission — comissão do negócio",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "dealId", "grossValueCents", "pct", "totalCents", "split", "status", "createdAt", "updatedAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "dealId": { "type": "string", "format": "uuid" },
+    "grossValueCents": { "type": "integer", "minimum": 0 },
+    "pct": { "type": "number", "minimum": 0, "maximum": 20 },
+    "totalCents": { "type": "integer", "minimum": 0 },
+    "split": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["userId", "pct", "amountCents"],
+        "properties": {
+          "userId": { "type": "string", "format": "uuid" },
+          "pct": { "type": "number", "minimum": 0, "maximum": 100 },
+          "amountCents": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "status": { "$ref": "crm/enums.json#/definitions/CommissionStatus" },
+    "expectedAt": { "type": ["string", "null"], "format": "date" },
+    "receivedAt": { "type": ["string", "null"], "format": "date" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}

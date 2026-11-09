@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crm/proposal.schema.json",
+  "title": "Proposal — proposta versionada",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "dealId", "version", "amountCents", "status", "createdAt", "updatedAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "dealId": { "type": "string", "format": "uuid" },
+    "version": { "type": "integer", "minimum": 1 },
+    "amountCents": { "type": "integer", "minimum": 1 },
+    "paymentMethod": { "oneOf": [{ "$ref": "crm/enums.json#/definitions/PaymentMethod" }, { "type": "null" }] },
+    "downPaymentCents": { "type": ["integer", "null"], "minimum": 0 },
+    "financingMonths": { "type": ["integer", "null"], "minimum": 1, "maximum": 420 },
+    "conditions": { "type": ["string", "null"], "maxLength": 2000 },
+    "status": { "$ref": "crm/enums.json#/definitions/ProposalStatus" },
+    "sentAt": { "type": ["string", "null"], "format": "date-time" },
+    "expiresAt": { "type": ["string", "null"], "format": "date-time" },
+    "decidedAt": { "type": ["string", "null"], "format": "date-time" },
+    "documentUrl": { "type": ["string", "null"], "format": "uri" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}

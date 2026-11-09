@@ -1,0 +1,11 @@
+node_modules/
+dist/
+data/
+*.log
+.env
+.env.local
+.turbo/
+.nyc_output/
+coverage/
+build_output.txt
+_export.cjs

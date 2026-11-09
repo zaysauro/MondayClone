@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crm/deal.schema.json",
+  "title": "Deal — card do pipeline",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "code", "title", "buyerPersonId", "propertyId", "ownerUserId", "stage", "valueCents", "lastActivityAt", "stageEnteredAt", "createdAt", "updatedAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "code": { "type": "string", "pattern": "^NEG-[0-9]{4}-[0-9]{4}$" },
+    "title": { "type": "string", "minLength": 2, "maxLength": 160 },
+    "leadId": { "type": ["string", "null"], "format": "uuid" },
+    "buyerPersonId": { "type": "string", "format": "uuid" },
+    "propertyId": { "type": "string", "format": "uuid" },
+    "ownerUserId": { "type": "string", "format": "uuid" },
+    "stage": { "$ref": "crm/enums.json#/definitions/Stage" },
+    "valueCents": { "type": "integer", "minimum": 0 },
+    "expectedCloseAt": { "type": ["string", "null"], "format": "date" },
+    "closedAt": { "type": ["string", "null"], "format": "date-time" },
+    "lostReason": { "oneOf": [{ "$ref": "crm/enums.json#/definitions/LostReason" }, { "type": "null" }] },
+    "lostNotes": { "type": ["string", "null"], "maxLength": 2000 },
+    "paymentMethod": { "oneOf": [{ "$ref": "crm/enums.json#/definitions/PaymentMethod" }, { "type": "null" }] },
+    "commissionPct": { "type": ["number", "null"], "minimum": 0, "maximum": 20 },
+    "lastActivityAt": { "type": "string", "format": "date-time" },
+    "stageEnteredAt": { "type": "string", "format": "date-time" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "deletedAt": { "type": ["string", "null"], "format": "date-time" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "stage": { "enum": ["ganho", "perdido"] } }, "required": ["stage"] },
+      "then": { "required": ["closedAt"] },
+      "else": { "properties": { "closedAt": { "type": "null" } } }
+    },
+    {
+      "if": { "properties": { "stage": { "const": "perdido" } }, "required": ["stage"] },
+      "then": { "required": ["lostReason"] },
+      "else": { "properties": { "lostReason": { "type": "null" } } }
+    },
+    {
+      "if": { "properties": { "stage": { "enum": ["proposta", "negociacao", "reserva", "contrato", "ganho"] } }, "required": ["stage"] },
+      "then": { "properties": { "valueCents": { "exclusiveMinimum": 0 } } }
+    }
+  ]
+}

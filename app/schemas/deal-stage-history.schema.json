@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crm/deal-stage-history.schema.json",
+  "title": "DealStageHistory — trilha append-only do pipeline",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "dealId", "toStage", "changedByUserId", "createdAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "dealId": { "type": "string", "format": "uuid" },
+    "fromStage": { "oneOf": [{ "$ref": "crm/enums.json#/definitions/Stage" }, { "type": "null" }] },
+    "toStage": { "$ref": "crm/enums.json#/definitions/Stage" },
+    "changedByUserId": { "type": "string", "format": "uuid" },
+    "note": { "type": ["string", "null"], "maxLength": 1000 },
+    "createdAt": { "type": "string", "format": "date-time" }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crm/development.schema.json",
+  "title": "Development — empreendimento",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "name", "status", "createdAt", "updatedAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "name": { "type": "string", "minLength": 2, "maxLength": 160 },
+    "builder": { "type": ["string", "null"] },
+    "status": { "$ref": "crm/enums.json#/definitions/DevelopmentStatus" },
+    "deliveryDate": { "type": ["string", "null"], "format": "date" },
+    "address": { "$ref": "crm/address.schema.json" },
+    "priceFromCents": { "type": ["integer", "null"], "minimum": 0 },
+    "priceToCents": { "type": ["integer", "null"], "minimum": 0 },
+    "bedroomsOptions": { "type": "array", "items": { "type": "integer", "minimum": 0 } },
+    "areaOptionsM2": { "type": "array", "items": { "type": "number", "exclusiveMinimum": 0 } },
+    "amenities": { "type": "array", "items": { "type": "string" } },
+    "brochureUrl": { "type": ["string", "null"], "format": "uri" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  },
+  "allOf": [
+    {
+      "if": { "required": ["priceFromCents", "priceToCents"] },
+      "then": {
+        "properties": { "priceToCents": { "minimum": 0 } }
+      }
+    }
+  ]
+}

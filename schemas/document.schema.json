@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crm/document.schema.json",
+  "title": "Document — documento de lead, negócio ou imóvel",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "title", "status", "createdAt", "updatedAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "dealId": { "type": ["string", "null"], "format": "uuid" },
+    "personId": { "type": ["string", "null"], "format": "uuid" },
+    "propertyId": { "type": ["string", "null"], "format": "uuid" },
+    "type": { "$ref": "crm/enums.json#/definitions/DocumentType" },
+    "title": { "type": "string", "minLength": 2, "maxLength": 160 },
+    "status": { "$ref": "crm/enums.json#/definitions/DocumentStatus" },
+    "fileUrl": { "type": ["string", "null"], "format": "uri" },
+    "fileName": { "type": ["string", "null"], "maxLength": 200 },
+    "mimeType": { "type": ["string", "null"], "maxLength": 100 },
+    "sizeBytes": { "type": ["integer", "null"], "minimum": 0 },
+    "issuedAt": { "type": ["string", "null"], "format": "date" },
+    "expiresAt": { "type": ["string", "null"], "format": "date" },
+    "requestedAt": { "type": ["string", "null"], "format": "date-time" },
+    "receivedAt": { "type": ["string", "null"], "format": "date-time" },
+    "reviewedAt": { "type": ["string", "null"], "format": "date-time" },
+    "reviewedByUserId": { "type": ["string", "null"], "format": "uuid" },
+    "rejectionReason": { "type": ["string", "null"], "maxLength": 500 },
+    "notes": { "type": ["string", "null"], "maxLength": 2000 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "aprovado" } }, "required": ["status"] },
+      "then": { "required": ["fileUrl"] }
+    },
+    {
+      "if": { "properties": { "status": { "const": "reprovado" } }, "required": ["status"] },
+      "then": { "required": ["rejectionReason"] },
+      "else": { "properties": { "rejectionReason": { "type": "null" } } }
+    }
+  ],
+  "anyOf": [
+    { "required": ["dealId"] },
+    { "required": ["personId"] },
+    { "required": ["propertyId"] }
+  ]
+}

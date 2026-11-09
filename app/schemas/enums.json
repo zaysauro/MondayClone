@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crm/enums.json",
+  "title": "Enums do CRM Imobiliário",
+  "definitions": {
+    "Stage": { "type": "string", "enum": ["novo_lead", "contato_feito", "qualificado", "visita_agendada", "proposta", "negociacao", "reserva", "contrato", "ganho", "perdido"] },
+    "StageKind": { "type": "string", "enum": ["open", "won", "lost"] },
+    "PersonType": { "type": "string", "enum": ["comprador", "proprietario", "inquilino", "fiador", "corretor_parceiro"] },
+    "PropertyType": { "type": "string", "enum": ["apartamento", "casa", "terreno", "comercial", "rural"] },
+    "PropertyPurpose": { "type": "string", "enum": ["venda", "aluguel", "venda_aluguel"] },
+    "PropertyStatus": { "type": "string", "enum": ["captacao", "disponivel", "reservado", "vendido", "alugado", "inativo"] },
+    "DevelopmentStatus": { "type": "string", "enum": ["lancamento", "em_obras", "pronto", "entregue"] },
+    "LeadSource": { "type": "string", "enum": ["indicacao", "site", "portal", "whatsapp", "instagram", "facebook", "placa", "plantao", "telefone", "outro"] },
+    "LeadTemperature": { "type": "string", "enum": ["quente", "morno", "frio"] },
+    "Urgency": { "type": "string", "enum": ["imediata", "30_dias", "90_dias", "sem_pressa"] },
+    "PaymentMethod": { "type": "string", "enum": ["financiamento", "fgts", "subsidio", "a_vista", "permuta"] },
+    "ProposalStatus": { "type": "string", "enum": ["rascunho", "enviada", "contraproposta", "aceita", "recusada", "expirada"] },
+    "ActivityType": { "type": "string", "enum": ["ligacao", "whatsapp", "email", "visita", "reuniao", "tarefa", "nota", "sistema"] },
+    "LostReason": { "type": "string", "enum": ["preco", "financiamento_recusado", "desistiu", "comprou_concorrente", "imovel_indisponivel", "sem_resposta", "outro"] },
+    "CommissionStatus": { "type": "string", "enum": ["prevista", "faturada", "recebida", "cancelada"] },
+    "UserRole": { "type": "string", "enum": ["admin", "gestor", "corretor", "assistente"] },
+    "MaritalStatus": { "type": "string", "enum": ["solteiro", "casado", "divorciado", "viuvo", "uniao_estavel"] }
+  }
+}

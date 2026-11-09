@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crm/property.schema.json",
+  "title": "Property — imóvel",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "code", "type", "purpose", "status", "address", "priceCents", "bedrooms", "suites", "bathrooms", "parkingSpots", "areaM2", "exclusive", "createdAt", "updatedAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "code": { "type": "string", "pattern": "^[A-Z]{2,3}-[0-9]{3,6}$" },
+    "type": { "$ref": "crm/enums.json#/definitions/PropertyType" },
+    "purpose": { "$ref": "crm/enums.json#/definitions/PropertyPurpose" },
+    "status": { "$ref": "crm/enums.json#/definitions/PropertyStatus" },
+    "developmentId": { "type": ["string", "null"], "format": "uuid" },
+    "ownerPersonId": { "type": ["string", "null"], "format": "uuid" },
+    "address": { "$ref": "crm/address.schema.json" },
+    "priceCents": { "type": "integer", "minimum": 1 },
+    "condoFeeCents": { "type": ["integer", "null"], "minimum": 0 },
+    "iptuAnnualCents": { "type": ["integer", "null"], "minimum": 0 },
+    "bedrooms": { "type": "integer", "minimum": 0, "maximum": 30 },
+    "suites": { "type": "integer", "minimum": 0, "maximum": 30 },
+    "bathrooms": { "type": "integer", "minimum": 0, "maximum": 30 },
+    "parkingSpots": { "type": "integer", "minimum": 0, "maximum": 30 },
+    "areaM2": { "type": "number", "exclusiveMinimum": 0 },
+    "landAreaM2": { "type": ["number", "null"], "minimum": 0 },
+    "floor": { "type": ["integer", "null"] },
+    "ageYears": { "type": ["integer", "null"], "minimum": 0 },
+    "features": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "description": { "type": ["string", "null"], "maxLength": 4000 },
+    "photos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["url", "order"],
+        "properties": {
+          "url": { "type": "string", "format": "uri" },
+          "caption": { "type": ["string", "null"] },
+          "order": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "exclusive": { "type": "boolean" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "deletedAt": { "type": ["string", "null"], "format": "date-time" }
+  }
+}

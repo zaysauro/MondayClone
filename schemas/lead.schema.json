@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crm/lead.schema.json",
+  "title": "Lead — interesse captado",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "personId", "ownerUserId", "source", "interest", "temperature", "score", "qualified", "createdAt", "updatedAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "personId": { "type": "string", "format": "uuid" },
+    "ownerUserId": { "type": "string", "format": "uuid" },
+    "source": { "$ref": "crm/enums.json#/definitions/LeadSource" },
+    "interest": {
+      "type": "object",
+      "required": ["urgency"],
+      "properties": {
+        "propertyId": { "type": ["string", "null"], "format": "uuid" },
+        "developmentId": { "type": ["string", "null"], "format": "uuid" },
+        "propertyTypes": { "type": "array", "items": { "$ref": "crm/enums.json#/definitions/PropertyType" } },
+        "budgetMaxCents": { "type": ["integer", "null"], "minimum": 0 },
+        "neighborhoods": { "type": "array", "items": { "type": "string" } },
+        "urgency": { "$ref": "crm/enums.json#/definitions/Urgency" }
+      }
+    },
+    "temperature": { "$ref": "crm/enums.json#/definitions/LeadTemperature" },
+    "score": { "type": "integer", "minimum": 0, "maximum": 100 },
+    "qualified": { "type": "boolean" },
+    "disqualifiedReason": { "type": ["string", "null"], "maxLength": 500 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "deletedAt": { "type": ["string", "null"], "format": "date-time" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "qualified": { "const": false } }, "required": ["qualified"] },
+      "then": { "required": ["disqualifiedReason"] },
+      "else": { "properties": { "disqualifiedReason": { "type": "null" } } }
+    }
+  ]
+}

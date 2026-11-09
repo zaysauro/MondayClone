@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "crm/person.schema.json",
+  "title": "Person — pessoa física/jurídica do CRM",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "name", "source", "createdAt", "updatedAt"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "type": { "$ref": "crm/enums.json#/definitions/PersonType" },
+    "name": { "type": "string", "minLength": 2, "maxLength": 160 },
+    "document": { "type": ["string", "null"], "pattern": "^[0-9]{11}$|^[0-9]{14}$" },
+    "email": { "type": ["string", "null"], "format": "email" },
+    "phone": { "type": ["string", "null"], "pattern": "^\\+[1-9][0-9]{7,14}$" },
+    "whatsapp": { "type": ["string", "null"], "pattern": "^\\+[1-9][0-9]{7,14}$" },
+    "birthDate": { "type": ["string", "null"], "format": "date" },
+    "maritalStatus": { "oneOf": [{ "$ref": "crm/enums.json#/definitions/MaritalStatus" }, { "type": "null" }] },
+    "profession": { "type": ["string", "null"] },
+    "incomeCents": { "type": ["integer", "null"], "minimum": 0 },
+    "creditScore": { "type": ["integer", "null"], "minimum": 0, "maximum": 1000 },
+    "preferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "budgetMinCents": { "type": ["integer", "null"], "minimum": 0 },
+        "budgetMaxCents": { "type": ["integer", "null"], "minimum": 0 },
+        "bedroomsMin": { "type": ["integer", "null"], "minimum": 0 },
+        "neighborhoods": { "type": "array", "items": { "type": "string" } },
+        "propertyTypes": { "type": "array", "items": { "$ref": "crm/enums.json#/definitions/PropertyType" } },
+        "financing": { "oneOf": [{ "$ref": "crm/enums.json#/definitions/PaymentMethod" }, { "type": "null" }] }
+      }
+    },
+    "address": { "$ref": "crm/address.schema.json" },
+    "source": { "$ref": "crm/enums.json#/definitions/LeadSource" },
+    "tags": { "type": "array", "items": { "type": "string", "maxLength": 40 }, "uniqueItems": true },
+    "notes": { "type": ["string", "null"], "maxLength": 4000 },
+    "consent": {
+      "type": "object",
+      "required": ["lgpdAcceptedAt", "marketingOptIn"],
+      "properties": {
+        "lgpdAcceptedAt": { "type": "string", "format": "date-time" },
+        "marketingOptIn": { "type": "boolean" },
+        "source": { "type": "string" }
+      }
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "deletedAt": { "type": ["string", "null"], "format": "date-time" }
+  }
+}
