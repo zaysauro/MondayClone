@@ -20,6 +20,10 @@ export const api = async <T,>(path: string, init?: RequestInit): Promise<T> => {
   }
   if (res.status === 204) return undefined as T;
   const data = await res.json().catch(() => null);
+  if (data === null) {
+    // Resposta sem corpo JSON (ex.: rewrite do SPA no deploy estático) → modo demonstração offline.
+    return demoApi<T>(path, init);
+  }
   if (!res.ok) throw new HttpError((data && (data as { error?: string }).error) || `Erro HTTP ${res.status}`, res.status);
   return data as T;
 };
